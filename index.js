@@ -4,7 +4,8 @@ import { Hello } from './Controllers/GlobalControllers.js';
 const app = express()
 
 app.get("/", function(req, res) {
-    res.send("Hello Awdiz..")
+    res.send("Hello Yogesh..")
+
 })
 
 app.get("/hello", Hello);
