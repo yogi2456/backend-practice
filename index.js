@@ -3,10 +3,12 @@ import router from './Routes/index.js';
 import { Hello } from './Controllers/GlobalControllers.js';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 
 const app = express()
 
 dotenv.config();
+app.use(morgan('dev'));
 
 // app.use((req, res, next) => {
 //     console.log("hi from middleware use")
