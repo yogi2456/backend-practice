@@ -6,3 +6,19 @@ step 5 : index.js , import express , create istance of it, const app =express();
 step 6 : create api's, app.get("/hello", hello)
 step 6.1 : connect mongodb .....(pending....)
 step 7 : listen on port 
+
+MongoDB connection
+step 1 : npm i mongoose
+step 2 : import mongoose from mongoose
+step 3 : mongoose.connect(mongourl).then(() => console.log("Database connected.))
+
+ENV connection
+step 1 : npm i dotenv
+step 2 : import dotenv from dotenv
+step 3 : after app, dotenv.config();
+step 4 : now you are access env variables in any files with process.env.variablename
+
+Logger reports:
+step 1 : npm i morgan
+step 2 : import morgan from morgan
+step 3 : app.use(morgan('dev))
