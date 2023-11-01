@@ -1,12 +1,13 @@
 import UserModal from "../Modals/User.modal.js";
 import bcrypt from 'bcrypt';
+import  Jwt  from "jsonwebtoken";
 
 export const Login = async (req, res) => {
     try {
         const { email, password} = req.body;
         if(!email || !password) return res.status(401).json({ success : false, message : "All fields are mandatory.."})
 
-        const user = await UserModal.findone({ email: email });
+        const user = await UserModal.findOne({ email: email });
         //console.log(user, "user")
 
         if(!user) return res.status(401).json({ success : false, message : "Email is wrong"});
@@ -18,13 +19,23 @@ export const Login = async (req, res) => {
         if(!isPasscorrect) {
             return res.status(401).json({ success: false, message: "password is wrong"})
         }
-        return res.status(200).json({ success: true, message: "Login sucessfull..", user: {name : user.name, id : user._id}})
+
+        // generate token
+
+        const token = await Jwt.sign({ id: user._id}, process.env.JWT_SECRET)
+        //console.log(token, "token")
+
+
+
+
+        return res.status(200).json({ success: true, message: "Login sucessfull..", user: {name : user.name, id : user._id}, token })
 
     }catch (error) {
         return res.status(500).json({ success : false, message : error})
     }
 }
 export const Register = async (req, res) => {
+
     try {
 
         const {name, email, password, number} = req.body;
@@ -51,14 +62,22 @@ export const Register = async (req, res) => {
 
 export const getCurrentUser = async (req, res) => {
     try {
-        const {id} = req.body;
-        if(id) return res.status(401).json({ success: false, message: "Id is required"})
-        const user = await UserModal.findById(id);
-    if(!user) return status(401).json({ success: false, message: "user not found"})
 
-    return res.status(200).json({ success: true, user : { name: user.name, id: user_id}})
+        const { token } = req.body;
+        if (!token) return res.status(401).json({ success: false, message: "Token is required."})
+
+        const {id} = await Jwt.verify(token, process.env.JWT_SECRET)
+        console.log(id, 'id')
+
+        const user = await UserModal.findById(id);
+        if (!user) return res.status(401).json({ success: false, message: "User not found."})
+
+        return res.status(200).json({ success: true, user: {name: user.name, id: user._id}, token})
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error})
     }
 }
+        
+
+        
