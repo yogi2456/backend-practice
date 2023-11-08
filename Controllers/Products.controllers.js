@@ -1,10 +1,30 @@
 import ProductModal from "../Modals/Product.modal.js"
 
-export const getAllProducts = (req, res) => {
-    res.send("All products....")
+export const getAllProducts = async (req, res) => {
+    try {
+         const products = await ProductModal.find({})
+
+         if(products.length) {
+            return res.status(200).json({success: true, message: "products found", products: products})
+         }
+         return res.status(404).json({success: false, message: "products not found"})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
 }
-export const getSingleProduct = (req, res) => {
-    res.send("Single product....")
+export const getSingleProduct = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        if(!productId) return res.status(404).json({success: false, message: " Product Id is required"})
+
+        const product = await ProductModal.findById(productId).select("-createdAt -updatedAt -_v")
+        if (product) {
+            return res.status(200).json({ success: true, message: "product found", product: product})
+        }
+        return res.status(404).json({success: false, message: "product not found"})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
 }
 
 export const addProduct = async (req, res) => {
@@ -21,5 +41,61 @@ export const addProduct = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({ success: false, message: error})
+    }
+}
+
+//filter
+//sorting asc des
+// pagination
+export const filterProducts = async (req, res) => {
+    try {
+         const {skip, query } = req.body;
+
+         const upadatedQuery = {}
+         upadatedQuery.category = query;
+
+         const products = await ProductModal.find(upadatedQuery).skip(skip)
+
+         return res.status(200).json({ message: "products found", products })
+        
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
+
+
+export const sortingProducts = async (req, res) => {
+    try {
+        const {query, sorting} = req.body;
+
+        const upadatedQuery = { category: query }
+
+        const name = sorting.replace(/^-/, "");
+
+        const order = sorting[0] == "-" ? "-" : "";
+
+        const updatedSorting = { [name]: `${order}1`}
+        //console.log(updatedSorting)
+
+        const products = await ProductModal.find(upadatedQuery).sort(updatedSorting)
+
+        return res.status(200).json({message: "products found", products})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
+
+
+export const paginationProducts = async (req, res) => {
+    try {
+        const {page, query} = req.body;
+
+        const upadatedQuery = { category: query};
+
+        const products = await ProductModal.find(upadatedQuery).limit(page)
+
+        return res.status(200).json({message: "products found", products})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
     }
 }
