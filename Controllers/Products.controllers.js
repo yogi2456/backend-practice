@@ -49,12 +49,13 @@ export const addProduct = async (req, res) => {
 // pagination
 export const filterProducts = async (req, res) => {
     try {
-         const {skip, query } = req.body;
+         const { query } = req.body;
+         if(!query) return res.status(401).json({success: false, message: "query is required"})
 
          const upadatedQuery = {}
          upadatedQuery.category = query;
 
-         const products = await ProductModal.find(upadatedQuery).skip(skip)
+         const products = await ProductModal.find(upadatedQuery)
 
          return res.status(200).json({ message: "products found", products })
         
@@ -66,9 +67,10 @@ export const filterProducts = async (req, res) => {
 
 export const sortingProducts = async (req, res) => {
     try {
-        const {query, sorting} = req.body;
+        const {sorting} = req.body;
+        if(!sorting) return res.status(401).json({success: false, message: "sorting is required"})
 
-        const upadatedQuery = { category: query }
+        // const upadatedQuery = { category: query }
 
         const name = sorting.replace(/^-/, "");
 
@@ -77,7 +79,7 @@ export const sortingProducts = async (req, res) => {
         const updatedSorting = { [name]: `${order}1`}
         //console.log(updatedSorting)
 
-        const products = await ProductModal.find(upadatedQuery).sort(updatedSorting)
+        const products = await ProductModal.find({}).sort(updatedSorting)
 
         return res.status(200).json({message: "products found", products})
     } catch (error) {
@@ -88,13 +90,15 @@ export const sortingProducts = async (req, res) => {
 
 export const paginationProducts = async (req, res) => {
     try {
-        const {page, query} = req.body;
+        const {page} = req.body;
+        if(!page) return res.status(401).json({success: false, message: "page is required"})
 
-        const upadatedQuery = { category: query};
+        // const upadatedQuery = { category: query};
 
-        const products = await ProductModal.find(upadatedQuery).limit(page)
+        const products = await ProductModal.find({}).skip(2).limit(page)
+        if(!products) return res.status(401).json({success: false, message: "products not found"})
 
-        return res.status(200).json({message: "products found", products})
+        return res.status(200).json({ success: true, message: "products found", products})
     } catch (error) {
         return res.status(500).json({success: false, message: error})
     }
