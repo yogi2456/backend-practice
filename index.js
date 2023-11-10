@@ -19,13 +19,15 @@ app.use(express.json());
 //     next();
 // })
 
-app.get("/", function(req, res) {
-    res.send("Hello Yogesh..")
+// app.get("/", function(req, res) {
+//     res.send("Hello Yogesh..")
 
+// })
+
+// app.get("/hello", Hello);
+app.get('/', (req, res) => {
+    res.send("welcome to backend")
 })
-
-app.get("/hello", Hello);
-
 app.use("/api/v1", router)
 
 mongoose.connect(process.env.MONGOURL).then(() => console.log("Database connected."))

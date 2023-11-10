@@ -30,3 +30,10 @@ cors connection
 step 1 : npm i cors
 step 2 : import cors from cors
 step 3 : app.use(cors())
+
+
+HTTP Methods
+POST - CREATE - USER CREATION
+GET - READ - GET PRODUCTS
+UPDATE, PUT/PATCH - UPDATE
+DELETE - DELETE
