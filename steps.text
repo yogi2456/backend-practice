@@ -24,7 +24,7 @@ step 4 : now you are access env variables in any files with process.env.variable
 Logger reports:
 step 1 : npm i morgan
 step 2 : import morgan from morgan
-step 3 : app.use(morgan('dev))
+step 3 : app.use(morgan('dev'))
 
 cors connection
 step 1 : npm i cors
