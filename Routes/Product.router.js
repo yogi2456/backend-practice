@@ -10,5 +10,6 @@ router.post("/get-single-product", getSingleProduct)
 router.post("/filter-products", filterProducts)
 router.post("/sorting-products", sortingProducts)
 router.post("/pagination-products", paginationProducts)
+router.post("/your-products", yourProducts)
 
 export default router;
