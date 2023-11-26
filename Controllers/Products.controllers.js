@@ -105,12 +105,12 @@ export const paginationProducts = async (req, res) => {
 }
 
 
-export const yourProducts = () => {
+export const yourProducts = async (req, res) => {
     try {
         const {id} = req.body;
         if(!id) return res.status(401).json({success: false, message: "Id not found"})
 
-        const allProducts = ProductModal.find({userId: id})
+        const allProducts = await ProductModal.find({userId: id})
         return res.status(200).json({success: true, products: allProducts})
     } catch (error) {
         return res.status(500).json({success: false, message: error})
