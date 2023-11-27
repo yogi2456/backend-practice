@@ -14,7 +14,7 @@ export const getAllProducts = async (req, res) => {
 }
 export const getSingleProduct = async (req, res) => {
     try {
-        const { productId } = req.body;
+        const { id: productId } = req.query;
         if(!productId) return res.status(404).json({success: false, message: " Product Id is required"})
 
         const product = await ProductModal.findById(productId).select("-createdAt -updatedAt -_v")
@@ -113,6 +113,35 @@ export const yourProducts = async (req, res) => {
         const allProducts = await ProductModal.find({userId: id})
         return res.status(200).json({success: true, products: allProducts})
     } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
+
+export const updateProduct = async (req, res) => {
+    try {
+        const { name, price, image, category, _id} = req.body.productData;
+        if(!name || !price || !image || !category || !_id) return res.status(404).json({success: false, message: "All fields are required."})
+
+        const response = await ProductModal.findByIdAndUpdate(_id, {name, price, image, category})
+
+        return res.status(200).json({success: true, message: "Product updated successfully"})
+
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
+
+export const deleteProduct = async (req, res) => {
+    try {
+        console.log(req.params, "req.body")
+        const {id} = req.query;
+        if(!id) return res.status(404).json({success: false, message: "Id not found"})
+
+        const response = await ProductModal.findByIdAndRemove(id)
+
+        return res.status(200).json({success: true, message: "Product deleted successfully"})
+    } catch (error) {
+        console.log(error)
         return res.status(500).json({success: false, message: error})
     }
 }
