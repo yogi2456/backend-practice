@@ -7,6 +7,7 @@ export const addCart = async (req, res) => {
         if(!productId || !userId) return res.status(404).json({success: false, message: "User and Product are mandatory.."})
 
         await UserModal.findByIdAndUpdate(userId, { cart: productId})
+        await UserModal.findByIdAndUpdate(userId, { $push: { cart: productId } })
 
         return res.status(200).json({success: true, message: "Product added to cart successfully"})
     } catch (error) {
@@ -14,19 +15,47 @@ export const addCart = async (req, res) => {
     }
 }
 
-export const getCartProduct = async (req, res) => {
+export const Cart = async (req, res) => {
     try {
-        const {userId} = req.body;
-        console.log(id, "id")
-        if(!userId) return res.status(404).json({success: false, message: "userId not found"})
-
-        await UserModal.findById({userId})
-
-        const cartProducts = await ProductModal.findById({userId})
-
-
-        return res.status(200).json({success: true, products: cartProducts})
+        const {id} = req.body;
+        if(!id) return res.status(404).json({success: false, message: "User is mandatory..."})
+        const user = await UserModal.findById(id)
+        if(!user) return res.status(404).json({success: false, message: "User not found"})
+        console.log(user.cart, "cart")
+        if(user) {
+            var userCart = []
+            for(var i = 0; i < user.cart.length; i++) {
+                console.log(user.cart[i], "user.cart[i")
+                const productData = await ProductModal.findById(user.cart[i])
+                userCart.push(productData)
+            }
+            console.log(userCart, "userCart")
+            return res.status(201).json({success: true, message: "Products fetched successfully..", products: userCart})
+        }
     } catch (error) {
         return res.status(500).json({success: false, message: error})
+    }
+}
+
+
+export const deleteCart = async (req, res) => {
+    try {
+        const { productId, userId} = req.body;
+        if (!productId || !userId) return res.status(404).json({ success: false, message: "User and Product are mandatory.."})
+
+        const user = await UserModal.findById(userId)
+        if (!user) return res.status(404).json({ success: false, message: "User not found.."})
+
+        const index = user.cart.indexOf(productId);
+        user.cart.splice(index, 1)
+        await user.save();
+
+        var userCart = []
+        for (var i = 0; i < user.cart.length; i++) {
+            userCart.push(productData)
+        }
+        return res.status(201).json({ success: true, message: "Product deleted successfully.", products: userCart })
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error} )
     }
 }

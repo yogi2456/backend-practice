@@ -145,16 +145,3 @@ export const deleteProduct = async (req, res) => {
         return res.status(500).json({success: false, message: error})
     }
 }
-
-// export const getCartProduct = async (req, res) => {
-//     try {
-//         const {userId} = req.body;
-//         console.log(id, "id")
-//         if(!userId) return res.status(404).json({success: false, message: "userId not found"})
-
-//         const cartProducts = await ProductModal.findById({productId})
-//         return res.status(200).json({success: true, products: cartProducts})
-//     } catch (error) {
-//         return res.status(500).json({success: false, message: error})
-//     }
-// }

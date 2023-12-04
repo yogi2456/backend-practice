@@ -13,6 +13,5 @@ router.post("/pagination-products", paginationProducts)
 router.post("/your-products", yourProducts)
 router.post("/update-product", updateProduct)
 router.delete("/delete-product", deleteProduct)
-// router.post("/get-cart-product", getCartProduct)
 
 export default router;
