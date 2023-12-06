@@ -6,7 +6,7 @@ export const addCart = async (req, res) => {
         const { productId, userId} = req.body;
         if(!productId || !userId) return res.status(404).json({success: false, message: "User and Product are mandatory.."})
 
-        await UserModal.findByIdAndUpdate(userId, { cart: productId})
+        // await UserModal.findByIdAndUpdate(userId, { cart: productId})
         await UserModal.findByIdAndUpdate(userId, { $push: { cart: productId } })
 
         return res.status(200).json({success: true, message: "Product added to cart successfully"})
@@ -20,7 +20,7 @@ export const Cart = async (req, res) => {
         const {id} = req.body;
         if(!id) return res.status(404).json({success: false, message: "User is mandatory..."})
         const user = await UserModal.findById(id)
-        if(!user) return res.status(404).json({success: false, message: "User not found"})
+        // if(!user) return res.status(404).json({success: false, message: "User not found"})
         console.log(user.cart, "cart")
         if(user) {
             var userCart = []
