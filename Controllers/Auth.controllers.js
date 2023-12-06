@@ -40,7 +40,7 @@ export const Register = async (req, res) => {
 
         const {name, email, password} = req.body.userData;
 
-        if(!name || !email || !password) return res.stats(401).json({ success: false, message: "All fields are mandatory"})
+        if(!name || !email || !password) return res.status(401).json({ success: false, message: "All fields are mandatory"})
         
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword, "hashedpassword")
