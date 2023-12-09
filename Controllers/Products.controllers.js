@@ -71,7 +71,8 @@ export const sortingProducts = async (req, res) => {
         if(!sorting) return res.status(401).json({success: false, message: "sorting is required"})
 
         // const upadatedQuery = { category: query }
-
+        
+        
         const name = sorting.replace(/^-/, "");
 
         const order = sorting[0] == "-" ? "-" : "";
