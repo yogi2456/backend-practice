@@ -52,6 +52,7 @@ export const deleteCart = async (req, res) => {
 
         var userCart = []
         for (var i = 0; i < user.cart.length; i++) {
+            const productData = await ProductModal.findById(user.cart[i])
             userCart.push(productData)
         }
         return res.status(201).json({ success: true, message: "Product deleted successfully.", products: userCart })
