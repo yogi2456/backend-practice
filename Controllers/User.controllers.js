@@ -60,3 +60,35 @@ export const deleteCart = async (req, res) => {
         return res.status(500).json({ success: false, message: error} )
     }
 }
+
+export const putProduct = async (req, res) => {
+    try {
+        const {userId} = req.params.id;
+
+        return res.status(200).json({success: true, userId})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+} 
+
+export const patchProduct = async (req, res) => {
+    try {
+        const {userId} = req.params.id;
+        const {name} = req.body;
+
+        return res.status(200).json({success: true, userId, name})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
+
+export const getProduct = async (req, res) => {
+    try {
+        const {userId} = req.params.id;
+        const {name} = req.body;
+
+        return res.status(200).json({success: true, userId, name})
+    } catch (error) {
+        return res.status(500).json({success: false, message: error})
+    }
+}
