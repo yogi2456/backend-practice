@@ -61,33 +61,33 @@ export const deleteCart = async (req, res) => {
     }
 }
 
-export const putProduct = async (req, res) => {
+export const putUpdateUser = async (req, res) => {
     try {
         const {userId} = req.params.id;
+        const {name} = req.body;
 
-        return res.status(200).json({success: true, userId})
+        return res.status(200).json({success: true, data: {userId, name}})
     } catch (error) {
         return res.status(500).json({success: false, message: error})
     }
 } 
 
-export const patchProduct = async (req, res) => {
+export const patchUpdateUser = async (req, res) => {
     try {
         const {userId} = req.params.id;
         const {name} = req.body;
 
-        return res.status(200).json({success: true, userId, name})
+        return res.status(200).json({success: true, data: {userId, name}})
     } catch (error) {
         return res.status(500).json({success: false, message: error})
     }
 }
 
-export const getProduct = async (req, res) => {
+export const getUser = async (req, res) => {
     try {
         const {userId} = req.params.id;
-        const {name} = req.body;
 
-        return res.status(200).json({success: true, userId, name})
+        return res.status(200).json({success: true, data: userId})
     } catch (error) {
         return res.status(500).json({success: false, message: error})
     }
